@@ -1,0 +1,6 @@
+{
+  "name": "BazaarHub",
+  "description": "Multi-vendor global e-commerce marketplace with secure checkout, real-time order tracking, wishlist, multilingual support, and role-based vendor/admin panels.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
