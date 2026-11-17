@@ -21,6 +21,7 @@ import com.example.data.model.OrderTrackingStatus
 import com.example.data.model.PaymentMethod
 import com.example.data.model.ProductCategory
 import com.example.data.model.UserRole
+import com.example.data.preferences.AppThemeMode
 import com.example.data.preferences.UserPreferencesRepository
 import com.example.data.repository.MarketplaceRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -45,6 +46,7 @@ data class MarketplaceUiState(
     val strings: AppStrings = localizedStrings(AppLanguage.ENGLISH),
     val currency: CurrencyCode = CurrencyCode.INR,
     val notificationsEnabled: Boolean = true,
+    val themeMode: AppThemeMode = AppThemeMode.LIGHT,
     val approvedProducts: List<ProductEntity> = emptyList(),
     val allProductsForAdmin: List<ProductEntity> = emptyList(),
     val searchQuery: String = "",
@@ -206,6 +208,7 @@ class MarketplaceViewModel(application: Application) : AndroidViewModel(applicat
             strings = localizedStrings(scoped.prefs.language),
             currency = scoped.prefs.currency,
             notificationsEnabled = scoped.prefs.notificationsEnabled,
+            themeMode = scoped.prefs.themeMode,
             approvedProducts = approved,
             allProductsForAdmin = allProds,
             searchQuery = filters.searchQuery,
@@ -245,6 +248,10 @@ class MarketplaceViewModel(application: Application) : AndroidViewModel(applicat
 
     fun setNotificationsEnabled(enabled: Boolean) {
         viewModelScope.launch { repository.setNotificationsEnabled(enabled) }
+    }
+
+    fun setThemeMode(mode: AppThemeMode) {
+        viewModelScope.launch { repository.setThemeMode(mode) }
     }
 
     fun switchUser(userId: String) {

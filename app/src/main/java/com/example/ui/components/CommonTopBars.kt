@@ -16,14 +16,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.Image
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CurrencyExchange
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.NotificationsActive
-import androidx.compose.material.icons.filled.Storefront
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.example.R
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
@@ -95,20 +98,14 @@ fun BazaarTopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Box(
+                Image(
+                    painter = painterResource(id = R.drawable.ic_bazaarhub_logo),
+                    contentDescription = "Bazar Hub logo",
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(34.dp)
+                        .size(36.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.primary),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Storefront,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
+                )
                 Column {
                     Text(
                         text = strings.appName,
@@ -180,7 +177,7 @@ fun BazaarTopBar(
                     modifier = Modifier.testTag("language_selector_button")
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Language,
+                        imageVector = Icons.Filled.Translate,
                         contentDescription = "Select language (${language.nativeName})",
                         tint = MaterialTheme.colorScheme.onBackground
                     )

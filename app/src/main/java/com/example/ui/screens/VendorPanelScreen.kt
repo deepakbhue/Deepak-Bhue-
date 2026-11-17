@@ -177,7 +177,7 @@ fun VendorPanelScreen(
                     EmptyStateView(
                         icon = Icons.Filled.Storefront,
                         title = "No products listed",
-                        subtitle = "Tap + to publish your first product to BazaarHub."
+                        subtitle = "Tap + to publish your first product to Bazar Hub."
                     )
                 } else {
                     LazyColumn(

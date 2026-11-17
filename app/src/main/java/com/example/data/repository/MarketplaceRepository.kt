@@ -21,6 +21,7 @@ import com.example.data.model.OrderLineItem
 import com.example.data.model.OrderTrackingStatus
 import com.example.data.model.PaymentMethod
 import com.example.data.model.UserRole
+import com.example.data.preferences.AppThemeMode
 import com.example.data.preferences.UserPreferencesRepository
 import com.example.data.preferences.UserPrefs
 import kotlinx.coroutines.flow.Flow
@@ -88,6 +89,7 @@ class MarketplaceRepository(
     suspend fun setLanguage(language: AppLanguage) = prefsRepo.setLanguage(language)
     suspend fun setCurrency(currency: CurrencyCode) = prefsRepo.setCurrency(currency)
     suspend fun setNotificationsEnabled(enabled: Boolean) = prefsRepo.setNotificationsEnabled(enabled)
+    suspend fun setThemeMode(mode: AppThemeMode) = prefsRepo.setThemeMode(mode)
 
     suspend fun switchToUser(userId: String) {
         prefsRepo.setActiveUserId(userId)

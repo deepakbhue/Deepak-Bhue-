@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "BazaarHub"
+rootProject.name = "Bazar Hub"
 
 include(":app")

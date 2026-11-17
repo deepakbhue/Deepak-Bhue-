@@ -124,7 +124,7 @@ object SeedDataProvider {
                 email = "vikram.ops@bazaarhub.admin",
                 authProvider = "GOOGLE",
                 role = "ADMIN",
-                vendorShopName = "BazaarHub HQ",
+                vendorShopName = "Bazar Hub HQ",
                 isVerifiedVendor = true,
                 createdAt = now - 86_400_000L * 12
             ),

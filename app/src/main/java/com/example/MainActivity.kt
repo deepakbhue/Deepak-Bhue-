@@ -1,13 +1,16 @@
 package com.example
 
 import android.Manifest
+import android.graphics.Color as AndroidColor
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
@@ -38,6 +41,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,6 +64,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.core.notifications.OrderNotificationHelper
+import com.example.data.preferences.AppThemeMode
 import com.example.ui.MarketplaceViewModel
 import com.example.ui.components.BazaarTopBar
 import com.example.ui.components.NotificationsModalSheet
@@ -101,9 +106,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         OrderNotificationHelper.ensureChannel(this)
         setContent {
-            BazaarHubTheme {
-                BazaarHubApp()
-            }
+            BazaarHubApp()
         }
     }
 }
@@ -115,6 +118,28 @@ fun BazaarHubApp(viewModel: MarketplaceViewModel = viewModel()) {
     val context = LocalContext.current
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    val useDark = when (uiState.themeMode) {
+        AppThemeMode.LIGHT -> false
+        AppThemeMode.DARK -> true
+        AppThemeMode.SYSTEM -> isSystemInDarkTheme()
+    }
+
+    DisposableEffect(useDark) {
+        (context as? ComponentActivity)?.enableEdgeToEdge(
+            statusBarStyle = if (useDark) {
+                SystemBarStyle.dark(AndroidColor.TRANSPARENT)
+            } else {
+                SystemBarStyle.light(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT)
+            },
+            navigationBarStyle = if (useDark) {
+                SystemBarStyle.dark(AndroidColor.TRANSPARENT)
+            } else {
+                SystemBarStyle.light(AndroidColor.TRANSPARENT, AndroidColor.TRANSPARENT)
+            }
+        )
+        onDispose {}
+    }
 
     var showNotificationsSheet by remember { mutableStateOf(false) }
     var showSocialAuthSheet by remember { mutableStateOf(false) }
@@ -185,6 +210,7 @@ fun BazaarHubApp(viewModel: MarketplaceViewModel = viewModel()) {
         }
     }
 
+    BazaarHubTheme(themeMode = uiState.themeMode) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val useNavigationRail = maxWidth >= 600.dp
 
@@ -348,6 +374,7 @@ fun BazaarHubApp(viewModel: MarketplaceViewModel = viewModel()) {
                                 onOpenAdminPanel = { navController.navigate(AppRoutes.ROUTE_ADMIN_PANEL) },
                                 onSelectLanguage = { viewModel.setLanguage(it) },
                                 onSelectCurrency = { viewModel.setCurrency(it) },
+                                onSelectThemeMode = { viewModel.setThemeMode(it) },
                                 onToggleNotifications = { viewModel.setNotificationsEnabled(it) }
                             )
                         }
@@ -429,5 +456,6 @@ fun BazaarHubApp(viewModel: MarketplaceViewModel = viewModel()) {
             },
             onDismiss = { showSocialAuthSheet = false }
         )
+    }
     }
 }

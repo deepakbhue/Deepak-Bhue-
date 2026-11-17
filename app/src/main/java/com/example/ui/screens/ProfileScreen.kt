@@ -28,8 +28,9 @@ import androidx.compose.material.icons.filled.AdminPanelSettings
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.CurrencyExchange
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Storefront
 import androidx.compose.material.icons.filled.SwapHoriz
@@ -52,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import com.example.core.i18n.AppLanguage
 import com.example.core.i18n.CurrencyCode
 import com.example.core.notifications.OrderNotificationHelper
+import com.example.data.preferences.AppThemeMode
 import com.example.ui.MarketplaceUiState
 import com.example.ui.components.RoleBadge
 
@@ -64,6 +66,7 @@ fun ProfileScreen(
     onOpenAdminPanel: () -> Unit,
     onSelectLanguage: (AppLanguage) -> Unit,
     onSelectCurrency: (CurrencyCode) -> Unit,
+    onSelectThemeMode: (AppThemeMode) -> Unit,
     onToggleNotifications: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -191,7 +194,7 @@ fun ProfileScreen(
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Icon(Icons.Filled.Language, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                        Icon(Icons.Filled.Translate, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                         Text(strings.languageSetting, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
                     }
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -224,6 +227,31 @@ fun ProfileScreen(
                                 selected = uiState.currency == curr,
                                 onClick = { onSelectCurrency(curr) },
                                 label = { Text(curr.label) }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        // App Theme Settings (Light / Dark / System)
+        item {
+            Card(
+                shape = RoundedCornerShape(18.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Icon(Icons.Filled.Palette, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                        Text("App Theme", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                    }
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        AppThemeMode.entries.forEach { mode ->
+                            FilterChip(
+                                selected = uiState.themeMode == mode,
+                                onClick = { onSelectThemeMode(mode) },
+                                label = { Text(mode.label) },
+                                modifier = Modifier.testTag("theme_chip_${mode.name.lowercase()}")
                             )
                         }
                     }

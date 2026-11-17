@@ -13,11 +13,23 @@ import kotlinx.coroutines.flow.map
 
 private val Context.dataStore by preferencesDataStore(name = "bazaarhub_prefs")
 
+enum class AppThemeMode(val label: String) {
+    LIGHT("Light"),
+    DARK("Dark"),
+    SYSTEM("System");
+
+    companion object {
+        fun fromString(value: String): AppThemeMode =
+            entries.find { it.name.equals(value, ignoreCase = true) } ?: LIGHT
+    }
+}
+
 data class UserPrefs(
     val activeUserId: String = SeedDataProvider.DEFAULT_BUYER_ID,
     val language: AppLanguage = AppLanguage.ENGLISH,
     val currency: CurrencyCode = CurrencyCode.INR,
-    val notificationsEnabled: Boolean = true
+    val notificationsEnabled: Boolean = true,
+    val themeMode: AppThemeMode = AppThemeMode.LIGHT
 )
 
 class UserPreferencesRepository(private val context: Context) {
@@ -26,6 +38,7 @@ class UserPreferencesRepository(private val context: Context) {
         val LANGUAGE = stringPreferencesKey("language_code")
         val CURRENCY = stringPreferencesKey("currency_code")
         val NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
+        val THEME_MODE = stringPreferencesKey("theme_mode")
     }
 
     val prefsFlow: Flow<UserPrefs> = context.dataStore.data.map { prefs ->
@@ -33,7 +46,8 @@ class UserPreferencesRepository(private val context: Context) {
             activeUserId = prefs[Keys.ACTIVE_USER_ID] ?: SeedDataProvider.DEFAULT_BUYER_ID,
             language = AppLanguage.fromCode(prefs[Keys.LANGUAGE] ?: "en"),
             currency = CurrencyCode.fromCode(prefs[Keys.CURRENCY] ?: "INR"),
-            notificationsEnabled = prefs[Keys.NOTIFICATIONS_ENABLED] ?: true
+            notificationsEnabled = prefs[Keys.NOTIFICATIONS_ENABLED] ?: true,
+            themeMode = AppThemeMode.fromString(prefs[Keys.THEME_MODE] ?: "LIGHT")
         )
     }
 
@@ -51,5 +65,9 @@ class UserPreferencesRepository(private val context: Context) {
 
     suspend fun setNotificationsEnabled(enabled: Boolean) {
         context.dataStore.edit { it[Keys.NOTIFICATIONS_ENABLED] = enabled }
+    }
+
+    suspend fun setThemeMode(mode: AppThemeMode) {
+        context.dataStore.edit { it[Keys.THEME_MODE] = mode.name }
     }
 }

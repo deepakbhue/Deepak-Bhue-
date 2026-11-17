@@ -117,7 +117,7 @@ data class AppStrings(
 
 fun localizedStrings(language: AppLanguage): AppStrings = when (language) {
     AppLanguage.ENGLISH -> AppStrings(
-        appName = "BazaarHub",
+        appName = "Bazar Hub",
         navShop = "Shop",
         navWishlist = "Wishlist",
         navOrders = "Orders",
@@ -220,7 +220,7 @@ fun localizedStrings(language: AppLanguage): AppStrings = when (language) {
     )
 
     AppLanguage.HINDI -> AppStrings(
-        appName = "BazaarHub",
+        appName = "Bazar Hub",
         navShop = "खरीदें",
         navWishlist = "पसंद",
         navOrders = "ऑर्डर",
@@ -323,7 +323,7 @@ fun localizedStrings(language: AppLanguage): AppStrings = when (language) {
     )
 
     AppLanguage.HINGLISH -> AppStrings(
-        appName = "BazaarHub",
+        appName = "Bazar Hub",
         navShop = "Shop",
         navWishlist = "Wishlist",
         navOrders = "Orders",
@@ -426,7 +426,7 @@ fun localizedStrings(language: AppLanguage): AppStrings = when (language) {
     )
 
     AppLanguage.SPANISH -> AppStrings(
-        appName = "BazaarHub",
+        appName = "Bazar Hub",
         navShop = "Tienda",
         navWishlist = "Favoritos",
         navOrders = "Pedidos",
